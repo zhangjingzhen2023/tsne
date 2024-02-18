@@ -5,7 +5,7 @@ const force_id = d3.range(startIndex-1, endIndex + 1)
 let forceHeight = document.querySelector("#bottom").offsetHeight;
 let forceWidth = forceHeight;
 
-const forceEl = d3.select("#bottom");
+const forceEl = d3.select("#bottom-right");
 const fg = forceEl.selectAll("div")
     .data(force_id)
     .join("div")

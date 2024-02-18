@@ -6,7 +6,6 @@ $( "#moveSlide" ).slider({
     values: [ 0, totalMoveMax ],
     change: function( event, ui ) {
         rings_g.attr("visibility", d => d["totalMove"]>=ui.values[0] && d["totalMove"]<=ui.values[1] ? "visible" : "hidden");
-        // rings_g.attr("visibility", d => d["id"]>=599 && d["id"]<=601 ? "visible" : "hidden");
     },
     slide: function( event, ui ) {
         $( "#move_value" )

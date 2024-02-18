@@ -201,6 +201,7 @@ function brushed(event) {
         redrawNodeAttr(null);
         drawGraphStatic(data, currentGraphTag);
         graphCover();
+        drawTSNEGraph(data);
     } else {
         // scatterBrush_g.select(".brush").call(scatterBrush.move, null);
         // 刷选与平行坐标轴，方向堆叠柱状图联动 这两个不需要判断，默认触发；
@@ -221,6 +222,9 @@ function brushed(event) {
             currentGraphTag = this.value;
             drawGraphStatic(brushData, currentGraphTag);
         });
+        
+        //tsne
+        drawTSNEGraph(brushData);
         
         // 刷选条件下是否展示轨迹，取决于轨迹按钮是否被选中
         if (showPath) {

@@ -3,9 +3,10 @@ d3.json("./data/frame36/fiance_0.6_edge3.json").then(res => {
         drawScatter(data);
         drawParallel(data);
         drawStackBar(data);
-        drawGraphFormData(data);
+        // drawGraphFormData(data);
         drawNodeAttr(data);
         drawGraphStatic(data, currentGraphTag);
+        drawTSNEGraph(data);
     }
 );
 
@@ -43,5 +44,11 @@ function dataProcess(data, xScale, yScale) {
     
     // console.log(d3.extent(data, d => d["graphNum"]))
     // console.log(d3.extent(data, d => d["totalMove"]))
+    
+    // 为每个节点的 pos 增加一些 tag 用于后面绘制每一帧静态图时的交互
+    data.forEach(d => {
+        d["pos"].forEach(dp => dp["label"] = d["label"])
+        d["pos"].forEach(dp => dp["id"] = d["id"])
+    })
     return data;
 }

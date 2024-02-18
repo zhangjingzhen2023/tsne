@@ -82,6 +82,14 @@ body{
     font-size: large;
 }
 
+.bottom-lr{
+    width: 50%;
+    height: 100%;
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+
 .force-item{
     height: 100%;
     margin-right:5px;
