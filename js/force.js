@@ -22,7 +22,7 @@ fg.each(function(i){
         .attr("height", forceHeight)
 })
 
-let forceLinkWidth =d3.scaleLinear().range([1,10]);
+let forceLinkOpacity =d3.scaleLinear().range([0.3,1]);
 function drawForceGraph(svg, g, node, edge, width, height) {
     let nodes = _.cloneDeep(node);
     let edges = _.cloneDeep(edge);
@@ -47,15 +47,31 @@ function drawForceGraph(svg, g, node, edge, width, height) {
     forceSimulation.force("center")
         .x(width/2)
         .y(height/2);
-    forceLinkWidth.domain(d3.extent(edges, e => e["value"]))
+    forceLinkOpacity.domain(d3.extent(edges, e => e["value"]))
+    svg.append("defs")
+        .append("marker")
+        .attr("id", 'force-arrow')
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 15)
+        .attr("refY", 0)
+        .attr("markerWidth", 8)
+        .attr("markerHeight", 8)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("fill", "#000000")
+        .attr("d", 'M0,-5L10,0L0,5');
     //绘制边
     let links = g.append("g")
         .selectAll("line")
         .data(edges)
         .enter()
         .append("line")
-        .attr("stroke",(d, i) => colorScale(d["source"]["index"]))
-        .attr("stroke-width",d => forceLinkWidth(d.value));
+        // .attr("stroke",(d, i) => colorScale(d["source"]["index"]))
+        .attr("stroke", "#000000")
+        .attr("stroke-opacity", d => forceLinkOpacity(d["value"]))
+        // .attr("stroke-width",d => forceLinkOpacity(d.value))
+        .attr("stroke-width",1)
+        .attr("marker-end", "url(#force-arrow)");
     let gs = g.selectAll(".circleText")
         .data(nodes)
         .enter()
@@ -70,9 +86,7 @@ function drawForceGraph(svg, g, node, edge, width, height) {
     //绘制节点
     gs.append("circle")
         .attr("r",forceNodeSize)
-        .attr("fill",function(d,i){
-            return colorScale(i);
-        });
+        .attr("fill", d => parallelColorScale(d["label"]));
     //文字
     gs.append("text")
         .attr("x",-10)
