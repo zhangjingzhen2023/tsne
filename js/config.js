@@ -33,6 +33,11 @@ let currentGraphTag = "degree_out";
 const totalMoveMax = 8;
 const graphNumMax = 16;
 
+let totalMoveSelectMin = 0;
+let totalMoveSelectMax = totalMoveMax;
+
+let graphNumSelectMin = 0;
+let graphNumSelectMax = graphNumMax;
 // 主图每个图元的内径和外径大小
 const scatterInnerR = 2;
 const scatterOuterR = 20;

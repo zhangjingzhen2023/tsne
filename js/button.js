@@ -14,6 +14,7 @@ d3.select("#info")
                             "ID: " + d["id"] + "<br>" +
                             "register_amt: " + (d["register_amt"] / 10000).toFixed(2) + "万元<br>" +
                             "penalty: " + d["penalty"] + "<br>" +
+                            "overdue_times: " + d["overdue_times"] + "<br>" +
                             "encouraged_flag: " + d["encouraged_flag"] + "<br>" +
                             "high_tech_flag: " + d["high_tech_flag"] + "<br>" +
                             "nation_important_flag: " + d["nation_important_flag"] + "<br>" +
@@ -99,7 +100,7 @@ d3.select("#bar")
             scatter_g.selectAll("g")
                 .on("click.bar", function (event, datum) {
                     drawGraphStatic([datum], currentGraphTag);
-                    graphSelectEl.addEventListener("change", function() {
+                    graphSelectEl.addEventListener("change", function () {
                         currentGraphTag = this.value;
                         drawGraphStatic([datum], currentGraphTag);
                     });
@@ -181,8 +182,8 @@ d3.select("#brush")
         }
     })
     .on("mouseover", function () {
-    this.title = "brush";
-});
+        this.title = "brush";
+    });
 
 
 let scatterBrush = d3.brush()
@@ -211,14 +212,17 @@ function brushed(event) {
         reDrawParallel();
         brushData = data.filter(d => {
             return d["x"] + scatterMargin.left >= s[0][0] && d["x"] + scatterMargin.left <= s[1][0] &&
-                d["y"] + scatterMargin.top >= s[0][1] && d["y"] + scatterMargin.top <= s[1][1];
+                d["y"] + scatterMargin.top >= s[0][1] && d["y"] + scatterMargin.top <= s[1][1] &&
+                d["parallelTag"] &&
+                d["totalMove"] >= totalMoveSelectMin && d["totalMove"] <= totalMoveSelectMax &&
+                d["graphNum"] >= graphNumSelectMin && d["graphNum"] <= graphNumSelectMax;
         });
         drawStackBar(brushData);
         //刷选在雷达图中增加
         redrawNodeAttr(brushData);
         //graph
         drawGraphStatic(brushData, currentGraphTag);
-        graphSelectEl.addEventListener("change", function() {
+        graphSelectEl.addEventListener("change", function () {
             currentGraphTag = this.value;
             drawGraphStatic(brushData, currentGraphTag);
         });
@@ -243,22 +247,41 @@ function brushed(event) {
         }
         // 刷选条件下是否展示力导向图，取决力导向按钮是否被选中
         if (showForce) {
-            drawGraphFormData(brushData)
+            drawGraphFormData(brushData);
         }
     }
 }
 
 //右下切换图形统计视图
 let graphSelectEl = document.getElementById("graphSelect");
-graphSelectEl.addEventListener("change", function() {
+graphSelectEl.addEventListener("change", function () {
     currentGraphTag = this.value;
     drawGraphStatic(data, currentGraphTag);
 });
 
-function graphCover(){
+function graphCover() {
     drawGraphStatic(data, currentGraphTag);
-    graphSelectEl.addEventListener("change", function() {
+    graphSelectEl.addEventListener("change", function () {
         currentGraphTag = this.value;
         drawGraphStatic(data, currentGraphTag);
     });
 }
+
+
+let isHighLight = false;
+
+d3.select("#highlight")
+    .on("click", function (event, d) {
+        if (!isHighLight) {
+            isHighLight = true;
+            d3.select(this).style("background-color", "#d4d4d4");
+            highlight_g.attr("fill-opacity", d => d["overdue_times"] > 0 ? 0.3 : 0);
+        } else {
+            isHighLight = false;
+            d3.select(this).style("background-color", "#f6f5ee");
+            highlight_g.attr("fill-opacity", d => 0);
+        }
+    })
+    .on("mouseover", function () {
+        this.title = "highlight the overdue company";
+    });

@@ -64,13 +64,13 @@ function tsneBrushed(event, i) {
     let s = event.selection;
     if (!event.sourceEvent) return;
     if (!s) {
-        rings_g.attr("visibility",  "visible");
+        ringShow();
     } else {
-        rings_g.attr("visibility", d => tsneXScale(d['pos'][i]["lx"]) >= s[0][0]
-        && tsneXScale(d['pos'][i]["lx"]) <= s[1][0]
-        && tsneYScale(d['pos'][i]["ly"]) >= s[0][1]
-        && tsneYScale(d['pos'][i]["ly"]) <= s[1][1] ? "visible" : "hidden");
-        
+        // rings_g.attr("visibility", d => tsneXScale(d['pos'][i]["lx"]) >= s[0][0]
+        // && tsneXScale(d['pos'][i]["lx"]) <= s[1][0]
+        // && tsneYScale(d['pos'][i]["ly"]) >= s[0][1]
+        // && tsneYScale(d['pos'][i]["ly"]) <= s[1][1] ? "visible" : "hidden");
+        ringShow(i, s);
     }
     
 }

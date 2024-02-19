@@ -5,11 +5,14 @@ $( "#moveSlide" ).slider({
     max: totalMoveMax,
     values: [ 0, totalMoveMax ],
     change: function( event, ui ) {
-        rings_g.attr("visibility", d => d["totalMove"]>=ui.values[0] && d["totalMove"]<=ui.values[1] ? "visible" : "hidden");
+        ringShow();
+        // rings_g.attr("visibility", d => d["totalMove"]>=ui.values[0] && d["totalMove"]<=ui.values[1] ? "visible" : "hidden");
     },
     slide: function( event, ui ) {
         $( "#move_value" )
             .val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        totalMoveSelectMin = ui.values[ 0 ];
+        totalMoveSelectMax = ui.values[ 1 ];
     }
 });
 
@@ -20,10 +23,13 @@ $( "#graphSlide" ).slider({
     max: graphNumMax,
     values: [ 0, graphNumMax],
     change: function( event, ui ) {
-        rings_g.attr("visibility", d => d["graphNum"]>=ui.values[0] && d["graphNum"]<=ui.values[1] ? "visible" : "hidden");
+        ringShow();
+        // rings_g.attr("visibility", d => d["graphNum"]>=ui.values[0] && d["graphNum"]<=ui.values[1] ? "visible" : "hidden");
     },
     slide: function( event, ui ) {
         $( "#graph_value" )
             .val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        graphNumSelectMin = ui.values[ 0 ];
+        graphNumSelectMax = ui.values[ 1 ];
     }
 });

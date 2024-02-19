@@ -1,4 +1,4 @@
-d3.json("./data/frame36/fiance_0.6_edge3.json").then(res => {
+d3.json("./data/frame36/fiance_0.6_edge4.json").then(res => {
         data = JSON.parse(res);
         drawScatter(data);
         drawParallel(data);

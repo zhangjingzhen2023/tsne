@@ -58,7 +58,7 @@ let scatterXDomain, scatterYDomain;
 let scatterBrush_g = scatterSvg.append("g")
     .attr("class", "brush");
 let scatterSimulation;
-let rings_g, rData_g;
+let rings_g, rData_g, highlight_g;
 
 let scatterMoveScale = d3.scaleLinear()
     .range([scatterInnerR, scatterOuterR]);
@@ -140,6 +140,12 @@ function drawScatter(res) {
         .attr("fill", d => scatterColorScale(d["index"]))
         .attr("fill-opacity", d => opacityScale(d["move"]));
     
+    highlight_g = rings_g.append("circle")
+        .attr("fill", "#000000")
+        // .attr("fill-opacity", d => d["overdue_times"] > 0 ? 0.3 : 0)
+        .attr("fill-opacity", 0)
+        .attr("r", d => scatterMoveScale(d["totalMove"]))
+    
     scatterSimulation = d3.forceSimulation(data)
         .force("collide", d3.forceCollide().radius(d => scatterMoveScale(d["totalMove"])))
         // .force("center", d3.forceCenter(scatterWidth/2, scatterHeight/2))
@@ -174,4 +180,22 @@ function getArc(d, indexScale, moveScale) {
         .startAngle(0)
         .endAngle(Math.PI * 2);
     return a();
+}
+
+function ringShow(i = -1, s = null) {
+    if (s){
+        rings_g.attr("visibility", d => d["parallelTag"] &&
+        d["totalMove"]>=totalMoveSelectMin && d["totalMove"]<=totalMoveSelectMax &&
+        d["graphNum"]>=graphNumSelectMin && d["graphNum"]<=graphNumSelectMax &&
+        tsneXScale(d['pos'][i]["lx"]) >= s[0][0] &&
+        tsneXScale(d['pos'][i]["lx"]) <= s[1][0] &&
+        tsneYScale(d['pos'][i]["ly"]) >= s[0][1] &&
+        tsneYScale(d['pos'][i]["ly"]) <= s[1][1]? "visible" : "hidden");
+        
+    }else {
+        rings_g.attr("visibility", d => d["parallelTag"] &&
+        d["totalMove"]>=totalMoveSelectMin && d["totalMove"]<=totalMoveSelectMax &&
+        d["graphNum"]>=graphNumSelectMin && d["graphNum"]<=graphNumSelectMax ? "visible" : "hidden");
+        
+    }
 }

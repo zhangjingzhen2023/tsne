@@ -18,7 +18,7 @@ const parallel_g = parallelSvg.append("g")
     .attr("transform", `translate(${parallelMargin.left}, ${parallelMargin.top})`);
 
 let parallel_path;
-const parallelKey = ["label", "register_amt", "scope_ind", "employee_number", "encouraged_flag", "nation_important_flag", "high_tech_flag", "penalty"];
+const parallelKey = ["label", "register_amt", "scope_ind", "employee_number", "encouraged_flag", "nation_important_flag", "high_tech_flag", "penalty", "overdue_times"];
 let parallelYScale = d3.scaleLinear()
     .domain([0, parallelKey.length - 1])
     .range([parallelMargin.top, parallelClipHeight]);
@@ -106,7 +106,7 @@ function drawParallel(data) {
                 d["parallelTag"] = false;
             }
         });
-        rings_g.attr("visibility", d => d["parallelTag"] ? "visible" : "hidden");
+        ringShow();
     }
 }
 

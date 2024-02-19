@@ -146,6 +146,11 @@ body{
      background-image: url("../image/brush.svg");
  }
 
+ #highlight{
+     background-image: url("../image/hightlight.svg");
+ }
+
+
 .bc{
     background-position: center;
     background-repeat: no-repeat;
