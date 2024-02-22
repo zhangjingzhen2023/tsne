@@ -84,15 +84,15 @@ function drawForceGraph(svg, g, node, edge, width, height, selectNodeList) {
         })
         .call(drag(forceSimulation));
     //绘制节点
-    gs.append("circle")
-        .attr("r",forceNodeSize)
-        .attr("fill", d => parallelColorScale(d["label"]));
-    gs.append("circle")
-        .attr("r",forceNodeSize+2)
-        .attr("fill-opacity", 0)
-        .attr("stroke", d3.color(forceCenterColor))
-        .attr("stroke-width", "2px")
-        .attr("stroke-opacity",d => selectNId.includes(d["id"]) ? 1 : 0);
+    // gs.append("circle")
+    //     .attr("r",forceNodeSize)
+    //     .attr("fill", d => parallelColorScale(d["label"]));
+    // gs.append("circle")
+    //     .attr("r",forceNodeSize+2)
+    //     .attr("fill-opacity", 0)
+    //     .attr("stroke", d3.color(forceCenterColor))
+    //     .attr("stroke-width", "2px")
+    //     .attr("stroke-opacity",d => selectNId.includes(d["id"]) ? 1 : 0);
     //文字
     gs.append("text")
         .attr("x",-10)
@@ -100,6 +100,15 @@ function drawForceGraph(svg, g, node, edge, width, height, selectNodeList) {
         .attr("dy",2)
         .attr("font-size", 14)
         .text(d => d["id"]);
+    
+    //绘制同心圆
+        gs.selectAll(".force-rd")
+        .data(d => getRingData(d))
+        .join("path")
+        .attr("d", d => getArc(d, indexScale, scatterMoveScale))
+        .attr("fill", d => scatterColorScale(d["index"]))
+        .attr("fill-opacity", d => opacityScale(d["move"]));
+    
     function ticked(){
         links
             .attr("x1",function(d){return d.source.x;})
