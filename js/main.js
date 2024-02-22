@@ -1,12 +1,21 @@
-d3.json("./data/frame36/fiance_0.6_edge4.json").then(res => {
+d3.json("./data/frame36/fiance_0.6_edge5.json").then(res => {
         data = JSON.parse(res);
         drawScatter(data);
         drawParallel(data);
         drawStackBar(data);
         // drawGraphFormData(data);
-        drawNodeAttr(data);
-        drawGraphStatic(data, currentGraphTag);
+        drawNodeAttr(data, currentNodeTag);
+        drawGraphStatic(data, currentGraphTag, 0);
         drawTSNEGraph(data);
+        // let tmp = data.map(d => d["pos"]).flat();
+        // let t = tmp.filter(t => t["index"] === 0);
+        // console.log(t.map(t => t["original_stress"]));
+        // console.log(t.map(t => t["additional_stress"]));
+        // console.log(t.map(t => t["original_losses"]));
+        // console.log(t.map(t => t["additional_losses"]));
+        // console.log(t.map(t => t["additional_defaults"]));
+        // console.log(t.map(t => t["impd"]));
+        // console.log(t.map(t => t["imps"]));
     }
 );
 
@@ -47,8 +56,8 @@ function dataProcess(data, xScale, yScale) {
     
     // 为每个节点的 pos 增加一些 tag 用于后面绘制每一帧静态图时的交互
     data.forEach(d => {
-        d["pos"].forEach(dp => dp["label"] = d["label"])
-        d["pos"].forEach(dp => dp["id"] = d["id"])
-    })
+        d["pos"].forEach(dp => dp["label"] = d["label"]);
+        d["pos"].forEach(dp => dp["id"] = d["id"]);
+    });
     return data;
 }

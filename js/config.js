@@ -28,6 +28,7 @@ const nodeAttrValues = ["register_amt", "penalty", "employee_number", "graphNum"
 const nodeAttrPercent = ["encouraged_flag", "high_tech_flag", "nation_important_flag"];
 
 let currentGraphTag = "degree_out";
+let currentNodeTag = "company";
 
 // 需要调整的数值
 const totalMoveMax = 8;
@@ -41,3 +42,41 @@ let graphNumSelectMax = graphNumMax;
 // 主图每个图元的内径和外径大小
 const scatterInnerR = 2;
 const scatterOuterR = 20;
+
+// tSNE 多视图的联动
+let tsneSelectNodeId = [];
+
+let forceCenterColor = '#2f4554';
+
+//雷达图
+let indicatorRadar = {
+    "company": [
+        { name: 'register_amt', max: 1 },
+        { name: 'penalty', max: 1 },
+        { name: 'employee', max: 1 },
+        { name: 'graphNum', max: 1 },
+        { name: 'encouraged', max: 1 },
+        { name: 'high_tech', max: 1 },
+        { name: 'nation_important', max: 1 }
+    ],
+    "risk": [
+        { name: 'original_stress', max: 1 },
+        { name: 'additional_stress', max: 1 },
+        { name: 'original_losses', max: 1 },
+        { name: 'additional_losses', max: 1 },
+        { name: 'impd', max: 1 },
+        { name: 'imps', max: 1 },
+    ]
+}
+
+let radarRiskList = indicatorRadar["risk"].map(iR => iR["name"])
+let radarValue = {
+    "company": {
+        "avg": [],
+        "select": []
+    },
+    "risk": {
+        "avg": [],
+        "select": []
+    },
+}

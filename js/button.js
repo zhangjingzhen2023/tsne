@@ -99,10 +99,10 @@ d3.select("#bar")
             d3.select(this).style("background-color", "#d4d4d4");
             scatter_g.selectAll("g")
                 .on("click.bar", function (event, datum) {
-                    drawGraphStatic([datum], currentGraphTag);
+                    drawGraphStatic([datum], currentGraphTag, 1);
                     graphSelectEl.addEventListener("change", function () {
                         currentGraphTag = this.value;
-                        drawGraphStatic([datum], currentGraphTag);
+                        drawGraphStatic([datum], currentGraphTag, 1);
                     });
                 });
         } else {
@@ -148,8 +148,9 @@ d3.select("#force")
                                 });
                                 let svg = d3.select(`#fg${pos["index"]}`);
                                 svg.selectAll("g").remove();
+                                svg.selectAll("defs").remove();
                                 let g = svg.append("g");
-                                drawForceGraph(svg, g, forceNodes, forceEdges, forceWidth, forceHeight);
+                                drawForceGraph(svg, g, forceNodes, forceEdges, forceWidth, forceHeight, [d]);
                             }
                         });
                     } else {
@@ -200,7 +201,7 @@ function brushed(event) {
         reDrawParallel();
         drawStackBar(data);
         redrawNodeAttr(null);
-        drawGraphStatic(data, currentGraphTag);
+        // drawGraphStatic(data, currentGraphTag);
         graphCover();
         drawTSNEGraph(data);
     } else {
@@ -221,10 +222,10 @@ function brushed(event) {
         //刷选在雷达图中增加
         redrawNodeAttr(brushData);
         //graph
-        drawGraphStatic(brushData, currentGraphTag);
+        drawGraphStatic(brushData, currentGraphTag, 1);
         graphSelectEl.addEventListener("change", function () {
             currentGraphTag = this.value;
-            drawGraphStatic(brushData, currentGraphTag);
+            drawGraphStatic(brushData, currentGraphTag, 1);
         });
         
         //tsne
@@ -256,14 +257,20 @@ function brushed(event) {
 let graphSelectEl = document.getElementById("graphSelect");
 graphSelectEl.addEventListener("change", function () {
     currentGraphTag = this.value;
-    drawGraphStatic(data, currentGraphTag);
+    drawGraphStatic(data, currentGraphTag,0);
 });
 
+let nodeSelectEl = document.getElementById("radarSelect");
+nodeSelectEl.addEventListener("change", function () {
+    currentNodeTag = this.value;
+    selectNodeAttr(currentNodeTag);
+})
+
 function graphCover() {
-    drawGraphStatic(data, currentGraphTag);
+    drawGraphStatic(data, currentGraphTag, 0);
     graphSelectEl.addEventListener("change", function () {
         currentGraphTag = this.value;
-        drawGraphStatic(data, currentGraphTag);
+        drawGraphStatic(data, currentGraphTag, 0);
     });
 }
 

@@ -66,6 +66,9 @@ body{
     height: 50%;
 }
 
+#nodeAttrs{
+    height: 100%;
+}
 
 #graphAttrs{
     height: 100%;

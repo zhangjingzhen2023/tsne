@@ -69,6 +69,11 @@
             </div>
             <div id="static" class="border">
                 <div id="nodeAttr" class="sta border">
+                    <select id="radarSelect">
+                        <option selected="selected">company</option>
+                        <option>risk</option>
+                    </select>
+                    <div id="nodeAttrs"></div>
                 </div>
                 <div id="graphAttr" class="sta border">
                     <select id="graphSelect">
@@ -78,14 +83,18 @@
                         <option>core</option>
                         <option>degree_in</option>
                         <option selected="selected">degree_out</option>
-                        <option>edge</option>
                         <option>eigen</option>
                         <option>harmon</option>
                         <option>hub</option>
                         <option>pagerank</option>
+                        <option>original_stress</option>
+                        <option>additional_stress</option>
+                        <option>original_losses</option>
+                        <option>additional_losses</option>
+                        <option>impd</option>
+                        <option>imps</option>
                     </select>
                     <div id="graphAttrs"></div>
-<!--                    <svg id="graphAttr_svg"></svg>-->
                 </div>
             </div>
         </div>

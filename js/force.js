@@ -23,9 +23,10 @@ fg.each(function(i){
 })
 
 let forceLinkOpacity =d3.scaleLinear().range([0.3,1]);
-function drawForceGraph(svg, g, node, edge, width, height) {
+function drawForceGraph(svg, g, node, edge, width, height, selectNodeList) {
     let nodes = _.cloneDeep(node);
     let edges = _.cloneDeep(edge);
+    let selectNId = selectNodeList.map(sn => sn["id"]);
     let forceSimulation = d3.forceSimulation(nodes)
         .force("charge", d3.forceManyBody()
             .strength(-50))
@@ -81,17 +82,23 @@ function drawForceGraph(svg, g, node, edge, width, height) {
             let cirY = d.y;
             return "translate("+cirX+","+cirY+")";
         })
-        .call(drag(forceSimulation)
-        );
+        .call(drag(forceSimulation));
     //绘制节点
     gs.append("circle")
         .attr("r",forceNodeSize)
         .attr("fill", d => parallelColorScale(d["label"]));
+    gs.append("circle")
+        .attr("r",forceNodeSize+2)
+        .attr("fill-opacity", 0)
+        .attr("stroke", d3.color(forceCenterColor))
+        .attr("stroke-width", "2px")
+        .attr("stroke-opacity",d => selectNId.includes(d["id"]) ? 1 : 0);
     //文字
     gs.append("text")
         .attr("x",-10)
-        .attr("y",-20)
-        .attr("dy",10)
+        .attr("y",-10)
+        .attr("dy",2)
+        .attr("font-size", 14)
         .text(d => d["id"]);
     function ticked(){
         links
@@ -168,8 +175,9 @@ function drawGraphFormData(da){
             });
             let svg = d3.select(`#fg${i}`);
             svg.selectAll("g").remove();
+            svg.selectAll("defs").remove();
             let g = svg.append("g");
-            drawForceGraph(svg, g, forceNodes, forceEdges, forceWidth, forceHeight);
+            drawForceGraph(svg, g, forceNodes, forceEdges, forceWidth, forceHeight, da);
         }
     })
 }
